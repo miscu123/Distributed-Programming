@@ -1,0 +1,15 @@
+Venit total: 0.00 RON
+Stocuri ramase:
+  - apa: 2
+  - zahar: 1
+
+Produse ce pentru realimentare:
+  - apa
+  - zahar
+
+Erori:
+  - Stoc insuficient pentru apa (disponibil: 2, cerut: 3)
+  - Stoc insuficient pentru zahar (disponibil: 1, cerut: 3)
+  - Stoc insuficient pentru apa (disponibil: 2, cerut: 3)
+  - Stoc insuficient pentru apa (disponibil: 2, cerut: 3)
+  - Stoc insuficient pentru zahar (disponibil: 1, cerut: 5)
