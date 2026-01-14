@@ -7,7 +7,7 @@ from Chess import ChessEngine
 WIDTH = 512
 HEIGHT = 512
 DIMENSION = 8
-SQUARE_SIZE = HEIGHT / DIMENSION
+SQUARE_SIZE = HEIGHT // DIMENSION
 MAX_FPS = 15
 IMAGES = {}
 
@@ -27,12 +27,46 @@ def main():
     clock = p.time.Clock()
     screen.fill(p.Color("white"))
     gs = ChessEngine.GameState()
+    valid_moves = gs.get_valid_moves()
+    move_made = False  # when a move is made
     load_images()  # load only once before the game loop
     running = True
+    sq_selected = ()  # no square selected at first (tuple (r,c))
+    player_clicks = []  # track player clicks (ex: [(6,4), (4,4)])
     while running:
         for e in p.event.get():
             if e.type == p.QUIT:
                 running = False
+            # mouse actions
+            elif e.type == p.MOUSEBUTTONDOWN:  # clik a piece
+                location = p.mouse.get_pos()  # x,y coords of the mouse
+                col = location[0] // SQUARE_SIZE
+                row = location[1] // SQUARE_SIZE
+                if sq_selected == (row, col):  # clicked the same square twice, reset
+                    sq_selected = ()
+                    player_clicks = []
+                else:
+                    sq_selected = (row, col)
+                    player_clicks.append(sq_selected)  # append 1st and 2nd click
+                if len(player_clicks) == 2:  # keep track and make a move
+                    move = ChessEngine.Move(player_clicks[0], player_clicks[1], gs.board)
+                    print("Move: ", move.get_chess_notation())
+                    if move in valid_moves:
+                        gs.make_move(move)
+                        move_made = True
+                    sq_selected = ()
+                    player_clicks = []
+            # keyboard actions
+            elif e.type == p.KEYDOWN:
+                if e.key == p.K_z:
+                    gs.undo_move()
+                    move_made = True
+                    sq_selected = ()
+                    player_clicks = []
+
+        if move_made:  # ONLY generate valid moves when 1 valid move was made because the callback is EXPENSIVE
+            valid_moves = gs.get_valid_moves()
+            move_made = False
 
         draw_game_state(screen, gs)
         clock.tick(MAX_FPS)
