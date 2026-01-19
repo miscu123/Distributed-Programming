@@ -54,15 +54,15 @@ def main():
                     if move in valid_moves:
                         gs.make_move(move)
                         move_made = True
-                    sq_selected = ()
-                    player_clicks = []
+                        sq_selected = ()
+                        player_clicks = []
+                    else:
+                        player_clicks = [sq_selected]
             # keyboard actions
             elif e.type == p.KEYDOWN:
                 if e.key == p.K_z:
                     gs.undo_move()
                     move_made = True
-                    sq_selected = ()
-                    player_clicks = []
 
         if move_made:  # ONLY generate valid moves when 1 valid move was made because the callback is EXPENSIVE
             valid_moves = gs.get_valid_moves()
