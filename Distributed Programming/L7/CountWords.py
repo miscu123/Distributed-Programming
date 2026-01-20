@@ -1,10 +1,7 @@
 def count_words_in_file(filename):
-    count = 0
     string = filename.split()
-    for word in string:
-        count += 1
 
-    return count
+    return len(string)
 
 
 with open("input.txt", 'r') as file:
